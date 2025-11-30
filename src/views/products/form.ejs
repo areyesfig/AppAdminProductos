@@ -1,0 +1,180 @@
+<%# Formulario de Producto (Crear/Editar) %>
+
+<%- include('../partials/alerts', { errors, success: [] }) %>
+
+<div class="page-header mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/productos">Productos</a></li>
+            <li class="breadcrumb-item active"><%= producto ? 'Editar' : 'Nuevo' %></li>
+        </ol>
+    </nav>
+    <h1>
+        <i class="bi bi-<%= producto ? 'pencil' : 'plus-circle' %> me-2"></i>
+        <%= producto ? 'Editar Producto' : 'Nuevo Producto' %>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <form action="<%= action %>" method="<%= method %>">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Producto *</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="nombre" 
+                            name="nombre" 
+                            value="<%= typeof oldInput !== 'undefined' && oldInput.nombre ? oldInput.nombre : (producto ? producto.nombre : '') %>"
+                            placeholder="Ej: Laptop HP ProBook 450"
+                            required
+                            autofocus
+                        >
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea 
+                            class="form-control" 
+                            id="descripcion" 
+                            name="descripcion" 
+                            rows="4"
+                            placeholder="Descripción detallada del producto..."
+                        ><%= typeof oldInput !== 'undefined' && oldInput.descripcion ? oldInput.descripcion : (producto ? producto.descripcion : '') %></textarea>
+                    </div>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="precio" class="form-label">Precio *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="precio" 
+                                    name="precio" 
+                                    value="<%= typeof oldInput !== 'undefined' && oldInput.precio ? oldInput.precio : (producto ? producto.precio : '') %>"
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="0.00"
+                                    required
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="stock" class="form-label">Stock</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="stock" 
+                                name="stock" 
+                                value="<%= typeof oldInput !== 'undefined' && oldInput.stock !== undefined ? oldInput.stock : (producto ? producto.stock : 0) %>"
+                                min="0"
+                                placeholder="0"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 mt-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="categoria" 
+                            name="categoria" 
+                            value="<%= typeof oldInput !== 'undefined' && oldInput.categoria ? oldInput.categoria : (producto ? producto.categoria : '') %>"
+                            placeholder="Ej: Electrónica, Ropa, Hogar..."
+                            list="categoriasList"
+                        >
+                        <datalist id="categoriasList">
+                            <% categorias.forEach(function(cat) { %>
+                                <option value="<%= cat %>">
+                            <% }); %>
+                        </datalist>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="imagen_url" class="form-label">URL de Imagen</label>
+                        <input 
+                            type="url" 
+                            class="form-control" 
+                            id="imagen_url" 
+                            name="imagen_url" 
+                            value="<%= typeof oldInput !== 'undefined' && oldInput.imagen_url ? oldInput.imagen_url : (producto ? producto.imagen_url : '') %>"
+                            placeholder="https://ejemplo.com/imagen.jpg"
+                        >
+                        <div class="form-text">Ingrese una URL válida de imagen (opcional)</div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-2"></i>
+                            <%= producto ? 'Actualizar Producto' : 'Crear Producto' %>
+                        </button>
+                        <a href="/productos" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-info-circle me-2"></i>Ayuda
+            </div>
+            <div class="card-body">
+                <h6>Campos obligatorios</h6>
+                <p class="text-muted small">
+                    Los campos marcados con (*) son obligatorios.
+                </p>
+                
+                <h6>Precio</h6>
+                <p class="text-muted small">
+                    Ingrese el precio en formato decimal. Ejemplo: 99.99
+                </p>
+                
+                <h6>Stock</h6>
+                <p class="text-muted small">
+                    Cantidad de unidades disponibles. Si no se especifica, será 0.
+                </p>
+                
+                <h6>Categoría</h6>
+                <p class="text-muted small">
+                    Puede seleccionar una categoría existente o crear una nueva.
+                </p>
+                
+                <h6>Imagen</h6>
+                <p class="text-muted small mb-0">
+                    Proporcione una URL pública de imagen (formato JPG, PNG o WebP recomendado).
+                </p>
+            </div>
+        </div>
+        
+        <% if (producto) { %>
+            <div class="card mt-4">
+                <div class="card-header text-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Zona de Peligro
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">
+                        Eliminar este producto es una acción permanente.
+                    </p>
+                    <form action="/productos/<%= producto.id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-outline-danger w-100" data-confirm="¿Está seguro de eliminar este producto? Esta acción no se puede deshacer.">
+                            <i class="bi bi-trash me-2"></i>Eliminar Producto
+                        </button>
+                    </form>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

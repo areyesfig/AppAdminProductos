@@ -1,0 +1,55 @@
+<%# Partial para paginación %>
+
+<% if (typeof pagination !== 'undefined' && pagination.totalPages > 1) { %>
+    <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+            <%# Botón Anterior %>
+            <li class="page-item <%= pagination.page <= 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= pagination.page - 1 %><%= typeof filters !== 'undefined' && filters.busqueda ? '&busqueda=' + filters.busqueda : '' %><%= typeof filters !== 'undefined' && filters.categoria ? '&categoria=' + filters.categoria : '' %>">
+                    <i class="bi bi-chevron-left"></i> Anterior
+                </a>
+            </li>
+            
+            <%# Números de página %>
+            <% 
+                let startPage = Math.max(1, pagination.page - 2);
+                let endPage = Math.min(pagination.totalPages, pagination.page + 2);
+            %>
+            
+            <% if (startPage > 1) { %>
+                <li class="page-item">
+                    <a class="page-link" href="?page=1<%= typeof filters !== 'undefined' && filters.busqueda ? '&busqueda=' + filters.busqueda : '' %><%= typeof filters !== 'undefined' && filters.categoria ? '&categoria=' + filters.categoria : '' %>">1</a>
+                </li>
+                <% if (startPage > 2) { %>
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                <% } %>
+            <% } %>
+            
+            <% for (let i = startPage; i <= endPage; i++) { %>
+                <li class="page-item <%= i === pagination.page ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %><%= typeof filters !== 'undefined' && filters.busqueda ? '&busqueda=' + filters.busqueda : '' %><%= typeof filters !== 'undefined' && filters.categoria ? '&categoria=' + filters.categoria : '' %>"><%= i %></a>
+                </li>
+            <% } %>
+            
+            <% if (endPage < pagination.totalPages) { %>
+                <% if (endPage < pagination.totalPages - 1) { %>
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                <% } %>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<%= pagination.totalPages %><%= typeof filters !== 'undefined' && filters.busqueda ? '&busqueda=' + filters.busqueda : '' %><%= typeof filters !== 'undefined' && filters.categoria ? '&categoria=' + filters.categoria : '' %>"><%= pagination.totalPages %></a>
+                </li>
+            <% } %>
+            
+            <%# Botón Siguiente %>
+            <li class="page-item <%= pagination.page >= pagination.totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= pagination.page + 1 %><%= typeof filters !== 'undefined' && filters.busqueda ? '&busqueda=' + filters.busqueda : '' %><%= typeof filters !== 'undefined' && filters.categoria ? '&categoria=' + filters.categoria : '' %>">
+                    Siguiente <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
+    <p class="text-center text-muted small">
+        Mostrando <%= (pagination.page - 1) * pagination.limit + 1 %> - <%= Math.min(pagination.page * pagination.limit, pagination.total) %> de <%= pagination.total %> resultados
+    </p>
+<% } %>

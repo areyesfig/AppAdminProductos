@@ -1,0 +1,105 @@
+<%# Gestión de Usuarios (Admin) %>
+
+<%- include('../partials/alerts', { errors, success }) %>
+
+<div class="page-header mb-4">
+    <h1>
+        <i class="bi bi-people me-2"></i>Gestión de Usuarios
+    </h1>
+    <p class="text-muted">Administre los usuarios del sistema</p>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Último Login</th>
+                    <th>Registro</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% usuarios.forEach(function(usuario) { %>
+                    <tr>
+                        <td><%= usuario.id %></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle p-2 me-2">
+                                    <i class="bi bi-person text-primary"></i>
+                                </div>
+                                <div>
+                                    <strong><%= usuario.nombre %></strong>
+                                    <br>
+                                    <small class="text-muted"><%= usuario.email %></small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-<%= usuario.rol === 'admin' ? 'danger' : usuario.rol === 'moderador' ? 'warning' : 'primary' %>">
+                                <%= usuario.rol %>
+                            </span>
+                        </td>
+                        <td>
+                            <% if (usuario.activo) { %>
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>Activo
+                                </span>
+                            <% } else { %>
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-x-circle me-1"></i>Inactivo
+                                </span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <% if (usuario.ultimo_login) { %>
+                                <small>
+                                    <%= new Date(usuario.ultimo_login).toLocaleDateString('es-ES', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }) %>
+                                </small>
+                            <% } else { %>
+                                <small class="text-muted">Nunca</small>
+                            <% } %>
+                        </td>
+                        <td>
+                            <small>
+                                <%= new Date(usuario.fecha_creacion).toLocaleDateString('es-ES', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric'
+                                }) %>
+                            </small>
+                        </td>
+                        <td class="text-center">
+                            <% if (typeof user !== 'undefined' && usuario.id !== user.id) { %>
+                                <form action="/admin/usuarios/<%= usuario.id %>/toggle" method="POST" class="d-inline">
+                                    <input type="hidden" name="activo" value="<%= usuario.activo ? '' : '1' %>">
+                                    <button type="submit" class="btn btn-sm btn-outline-<%= usuario.activo ? 'warning' : 'success' %>" 
+                                            data-confirm="¿Está seguro de <%= usuario.activo ? 'desactivar' : 'activar' %> este usuario?">
+                                        <i class="bi bi-<%= usuario.activo ? 'pause-circle' : 'play-circle' %>"></i>
+                                        <%= usuario.activo ? 'Desactivar' : 'Activar' %>
+                                    </button>
+                                </form>
+                            <% } else { %>
+                                <span class="text-muted small">Tu cuenta</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-4">
+    <%- include('../partials/pagination', { pagination, filters: {} }) %>
+</div>

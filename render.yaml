@@ -1,0 +1,27 @@
+# Configuración para Render.com
+
+# Archivo de configuración para despliegue en Render
+# Este archivo se usa como referencia, la configuración real
+# se hace en el dashboard de Render
+
+services:
+  - type: web
+    name: app-web-segura
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /opt/render/project/src/data/database.sqlite
+    disk:
+      name: sqlite-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

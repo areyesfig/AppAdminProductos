@@ -1,0 +1,155 @@
+<%# Detalle de Producto %>
+
+<div class="page-header mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/productos">Productos</a></li>
+            <li class="breadcrumb-item active"><%= producto.nombre %></li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-box me-2"></i>Información del Producto
+                </h5>
+                <% if (typeof user !== 'undefined' && (producto.usuario_id === user.id || user.rol === 'admin')) { %>
+                    <div class="btn-group btn-group-sm">
+                        <a href="/productos/<%= producto.id %>/editar" class="btn btn-outline-primary">
+                            <i class="bi bi-pencil me-1"></i>Editar
+                        </a>
+                        <form action="/productos/<%= producto.id %>?_method=DELETE" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger" data-confirm="¿Está seguro de eliminar este producto?">
+                                <i class="bi bi-trash me-1"></i>Eliminar
+                            </button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title mb-3"><%= producto.nombre %></h2>
+                
+                <% if (producto.categoria) { %>
+                    <span class="badge bg-secondary mb-3"><%= producto.categoria %></span>
+                <% } %>
+                
+                <% if (producto.descripcion) { %>
+                    <div class="mb-4">
+                        <h6 class="text-muted">Descripción</h6>
+                        <p class="lead"><%= producto.descripcion %></p>
+                    </div>
+                <% } %>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="border rounded p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
+                                    <i class="bi bi-currency-dollar text-primary fs-4"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Precio</small>
+                                    <h4 class="mb-0">$<%= producto.precio.toFixed(2) %></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="border rounded p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-<%= producto.stock > 10 ? 'success' : producto.stock > 0 ? 'warning' : 'danger' %> bg-opacity-10 rounded p-2 me-3">
+                                    <i class="bi bi-archive text-<%= producto.stock > 10 ? 'success' : producto.stock > 0 ? 'warning' : 'danger' %> fs-4"></i>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Stock Disponible</small>
+                                    <h4 class="mb-0">
+                                        <%= producto.stock %> unidades
+                                        <% if (producto.stock === 0) { %>
+                                            <span class="badge bg-danger">Agotado</span>
+                                        <% } else if (producto.stock <= 10) { %>
+                                            <span class="badge bg-warning">Stock bajo</span>
+                                        <% } %>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <% if (producto.imagen_url) { %>
+                    <div class="mt-4">
+                        <h6 class="text-muted">Imagen</h6>
+                        <img src="<%= producto.imagen_url %>" alt="<%= producto.nombre %>" class="img-fluid rounded" style="max-height: 300px;">
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-info-circle me-2"></i>Detalles
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3">
+                        <small class="text-muted d-block">ID del Producto</small>
+                        <strong>#<%= producto.id %></strong>
+                    </li>
+                    <li class="mb-3">
+                        <small class="text-muted d-block">Creado por</small>
+                        <strong><%= producto.creador_nombre %></strong>
+                    </li>
+                    <li class="mb-3">
+                        <small class="text-muted d-block">Fecha de Creación</small>
+                        <strong>
+                            <%= new Date(producto.fecha_creacion).toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) %>
+                        </strong>
+                    </li>
+                    <% if (producto.fecha_actualizacion) { %>
+                        <li>
+                            <small class="text-muted d-block">Última Actualización</small>
+                            <strong>
+                                <%= new Date(producto.fecha_actualizacion).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                }) %>
+                            </strong>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="bi bi-arrow-left-right me-2"></i>Acciones
+            </div>
+            <div class="card-body d-grid gap-2">
+                <a href="/productos" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-2"></i>Volver a Productos
+                </a>
+                <% if (typeof user !== 'undefined' && (producto.usuario_id === user.id || user.rol === 'admin')) { %>
+                    <a href="/productos/<%= producto.id %>/editar" class="btn btn-primary">
+                        <i class="bi bi-pencil me-2"></i>Editar Producto
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

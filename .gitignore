@@ -1,0 +1,37 @@
+# Archivos y carpetas a ignorar en Git
+
+# Dependencias
+node_modules/
+
+# Variables de entorno (contiene información sensible)
+.env
+.env.local
+.env.production
+
+# Base de datos SQLite (se crea automáticamente)
+data/*.sqlite
+data/*.sqlite-wal
+data/*.sqlite-shm
+data/*.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Archivos de cobertura de tests
+coverage/
+
+# Archivos temporales
+tmp/
+temp/
