@@ -35,3 +35,4 @@ coverage/
 # Archivos temporales
 tmp/
 temp/
+.vscode/mcp.json
