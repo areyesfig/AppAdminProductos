@@ -1,5 +1,18 @@
 # 📦 Aplicación Web con Acceso Seguro a Base de Datos Relacional
 
+[![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?style=for-the-badge&logo=github)](https://github.com/areyesfig/AppAdminProductos)
+[![Render](https://img.shields.io/badge/Render-Deploy-46E3B7?style=for-the-badge&logo=render)](https://app-admin-productos.onrender.com)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite)](https://sqlite.org/)
+
+## 🔗 Enlaces
+
+| Recurso | URL |
+|---------|-----|
+| 🌐 **Aplicación en Producción** | https://app-admin-productos.onrender.com |
+| 📂 **Repositorio GitHub** | https://github.com/areyesfig/AppAdminProductos |
+| 📊 **Dashboard Render** | https://dashboard.render.com/web/srv-d4md54a4d50c73eibjo0 |
+
 ## 📋 Descripción
 
 Esta aplicación web fue desarrollada como proyecto para la materia de Bases de Datos Relacionales. Implementa un sistema completo de gestión de productos con autenticación robusta, operaciones CRUD y múltiples capas de seguridad.
